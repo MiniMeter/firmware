@@ -110,7 +110,9 @@ static void TWI_Decode(void) {
                     DIGITAL_PrintChar(TWI_START);
                 }
             }
-            if(data&TWI_SDA_bm) { DIGITAL_NewLine(); }
+            if(data&TWI_SDA_bm) {
+                DIGITAL_EndLine();
+            }
             byte = 0x00;
             bit = 0;
         } else {
@@ -142,7 +144,7 @@ static void TWI_Decode(void) {
 }
 
 static void TWI_KeyUp(KEYPAD_KEY_t key) {
-    if(!DIGITAL_Counter()) {
+    if(DIGITAL_Lock()) {
         return;
     }
     switch(key) {

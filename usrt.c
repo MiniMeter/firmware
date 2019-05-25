@@ -155,7 +155,7 @@ static void USRT_Decode(void) {
 }
 
 static void USRT_KeyUp(KEYPAD_KEY_t key) {
-    if(!DIGITAL_Counter()&&(key!=KEYPAD_KEY1)) {
+    if(DIGITAL_Lock()&&(key!=KEYPAD_KEY1)) {
         return;
     }
     switch(key) {
@@ -167,7 +167,7 @@ static void USRT_KeyUp(KEYPAD_KEY_t key) {
             break;
         case KEYPAD_KEY2:
             if(DIGITAL_IsHold()) { break; }
-            DIGITAL_NewLine();
+            DIGITAL_EndLine();
             USRT.settings.display = !USRT.settings.display;
             DIGITAL_Display(USRT.settings.display);
             USRT_SaveSettings();

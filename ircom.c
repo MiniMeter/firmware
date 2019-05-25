@@ -91,7 +91,7 @@ static void IRCOM_Decode(void) {
 }
 
 static void IRCOM_KeyUp(KEYPAD_KEY_t key) {
-    if(!DIGITAL_Counter()&&(key!=KEYPAD_KEY1)) {
+    if(DIGITAL_Lock()&&(key!=KEYPAD_KEY1)) {
         return;
     }
     switch(key) {
@@ -103,7 +103,7 @@ static void IRCOM_KeyUp(KEYPAD_KEY_t key) {
             break;
         case KEYPAD_KEY2:
             if(DIGITAL_IsHold()) { return; }
-            DIGITAL_NewLine();
+            DIGITAL_EndLine();
             IRCOM.settings.display = !IRCOM.settings.display;
             IRCOM_SaveSettings();
             break;

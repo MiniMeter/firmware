@@ -117,7 +117,7 @@ const __flash char TEXT_CHARGE_UNIT[] = "mAh";
 const __flash char TEXT_CHARGE_TIME[] = "%02u:%02u:%02u";
 /* INFO */
 const __flash char TEXT_INFO_FIRMWARE[] = "FIRMWARE:";
-const __flash char TEXT_INFO_VERSION[] = "F1 v1.0";
+const __flash char TEXT_INFO_VERSION[] = "F1 v1.1";
 const __flash char TEXT_INFO_RAM[] = "RAM USAGE:";
 const __flash char TEXT_INFO_FLASH[] = "FLASH USAGE:";
 const __flash char TEXT_INFO_EEPROM[] = "EEPROM USAGE:";

@@ -183,7 +183,7 @@ static void MAIN_Menu(void) {
 }
 
 int main(void) {
-    wdt_enable(WDT_PER_128CLK_gc);
+    wdt_enable(WDT_PER_256CLK_gc);
     DEVICE_ClockFreq_32MHz();
     DEVICE_Init();
     DEVICE_InterruptEnable();

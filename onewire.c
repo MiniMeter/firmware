@@ -123,7 +123,7 @@ static void ONEWIRE_Decode(void) {
                     }
                     DIGITAL_PrintChar('?');
                 }
-                DIGITAL_NewLine();
+                DIGITAL_EndLine();
                 DIGITAL_PrintChar('R');
                 ONEWIRE.reset = 1;
                 byte = 0x00;
@@ -150,7 +150,7 @@ static void ONEWIRE_Decode(void) {
 }
 
 static void ONEWIRE_KeyUp(KEYPAD_KEY_t key) {
-    if(!DIGITAL_Counter()&&(key!=KEYPAD_KEY1)) {
+    if(DIGITAL_Lock()&&(key!=KEYPAD_KEY1)) {
         return;
     }
     switch(key) {

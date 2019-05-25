@@ -30,7 +30,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define DIGITAL_INVERT  (1<<15)
 
 static struct {
-    uint8_t row, column, roll, new_line, hold, counter;
+    uint8_t row, column, roll, lock, end_line, hold, counter;
     DIGITAL_DISPLAY_t display;
     uint16_t idle;
     DIGITAL_Decode_t Decode;
@@ -42,15 +42,17 @@ static struct {
 
 static void DIGITAL_Ready(void);
 static void DIGITAL_Loop(void);
+static void DIGITAL_NewLine(void);
 
 void DIGITAL_Init(DIGITAL_Decode_t Decode) {
     DIGITAL.Decode = Decode;
     MAIN_Loop(DIGITAL_Ready);
     BUFFER_Clear();
     DIGITAL_Clear();
-    DIGITAL.counter = 0;
+    DIGITAL.counter = 1;
     DIGITAL.hold = 0;
     DIGITAL.idle = 0;
+    DIGITAL.lock = 1;
     DIGITAL.display = DIGITAL_DISPLAY_ASCII;
 }
 
@@ -61,6 +63,7 @@ static void DIGITAL_Ready(void) {
     DISPLAY_Idle();
     if(!BUFFER_Empty()) {
         MAIN_Loop(DIGITAL_Loop);
+        DIGITAL.lock = 0;
     }
 }
 
@@ -103,27 +106,12 @@ void DIGITAL_Print(uint8_t data) {
 }
 
 void DIGITAL_PrintChar(uint8_t ch) {
-    if(DIGITAL.new_line) {
-        DIGITAL.new_line = 0;
-        DIGITAL.column = 0;
-        if(++DIGITAL.row>=5) {
-            DIGITAL.row = 0;
-            DIGITAL.roll = 1;
-        }
-        for(uint8_t i=0; i<14; i++) {
-            DIGITAL.buffer[DIGITAL.row].text[i] = ' ';
-        }
-        DIGITAL.buffer[DIGITAL.row].control = 0;
-        if(++DIGITAL.counter>DISPLAY_WIDTH) {
-            DIGITAL.counter = 1;
-        }
+    if((DIGITAL.end_line)||(DIGITAL.column>=14)) {
+        DIGITAL.end_line = 0;
+        DIGITAL_NewLine();
     }
     DIGITAL.buffer[DIGITAL.row].text[DIGITAL.column] = ch;
-    if(++DIGITAL.column>=14) {
-        DIGITAL.new_line = 1;
-    } else {
-        DIGITAL.new_line = 0;
-    }
+    DIGITAL.column++;
     DIGITAL.idle = 0;
 }
 
@@ -152,8 +140,23 @@ void DIGITAL_PrintTab(void) {
     }
 }
 
-void DIGITAL_NewLine(void) {
-    DIGITAL.new_line = 1;
+void DIGITAL_EndLine(void) {
+    DIGITAL.end_line = 1;
+}
+
+static void DIGITAL_NewLine(void) {
+    DIGITAL.column = 0;
+    if(++DIGITAL.row>=5) {
+        DIGITAL.row = 0;
+        DIGITAL.roll = 1;
+    }
+    for(uint8_t i=0; i<14; i++) {
+        DIGITAL.buffer[DIGITAL.row].text[i] = ' ';
+    }
+    DIGITAL.buffer[DIGITAL.row].control = 0;
+    if(++DIGITAL.counter>DISPLAY_WIDTH) {
+        DIGITAL.counter = 1;
+    }
 }
 
 void DIGITAL_InvertLine(void) {
@@ -167,10 +170,9 @@ void DIGITAL_Clear(void) {
         }
         DIGITAL.buffer[y].control = 0;
     }
-    DIGITAL.row = 0xFF;
+    DIGITAL.row = 0;
     DIGITAL.column = 0;
     DIGITAL.roll = 0;
-    DIGITAL.new_line = 1;
 }
 
 void DIGITAL_Blackout(void) {
@@ -186,8 +188,8 @@ void DIGITAL_Blackout(void) {
     }
 }
 
-uint8_t DIGITAL_Counter(void) {
-    return DIGITAL.counter;
+uint8_t DIGITAL_Lock(void) {
+    return DIGITAL.lock;
 }
 
 void DIGITAL_Hold(uint8_t hold) {

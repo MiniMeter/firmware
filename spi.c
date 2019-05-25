@@ -146,7 +146,7 @@ static void SPI_Decode(void) {
             }
             if(data&SPI_SS_bm) {
                 DIGITAL_PrintChar(SPI_STOP);
-                DIGITAL_NewLine();
+                DIGITAL_EndLine();
             } else {
                 DIGITAL_PrintChar(SPI_START);
             }
@@ -194,7 +194,7 @@ static void SPI_Decode(void) {
 }
 
 static void SPI_KeyUp(KEYPAD_KEY_t key) {
-    if(!DIGITAL_Counter()&&(key!=KEYPAD_KEY1)) {
+    if(DIGITAL_Lock()&&(key!=KEYPAD_KEY1)) {
         return;
     }
     switch(key) {
@@ -206,7 +206,7 @@ static void SPI_KeyUp(KEYPAD_KEY_t key) {
             break;
         case KEYPAD_KEY2:
             if(DIGITAL_IsHold()) { break; }
-            DIGITAL_NewLine();
+            DIGITAL_EndLine();
             SPI.settings.input = !SPI.settings.input;
             SPI_SaveSettings();
             break;

@@ -92,7 +92,7 @@ static void UART_Decode(void) {
         if(dir) {
             if(UART.dir!=dir) {
                 UART.dir = dir;
-                DIGITAL_NewLine();
+                DIGITAL_EndLine();
             }
             uint8_t data = BUFFER_GetData();
             if(status&(USART_FERR_bm|USART_PERR_bm)) {
@@ -112,7 +112,7 @@ static void UART_Decode(void) {
 }
 
 static void UART_KeyUp(KEYPAD_KEY_t key) {
-    if(!DIGITAL_Counter()&&(key!=KEYPAD_KEY1)) {
+    if(DIGITAL_Lock()&&(key!=KEYPAD_KEY1)) {
         return;
     }
     switch(key) {
@@ -124,7 +124,7 @@ static void UART_KeyUp(KEYPAD_KEY_t key) {
             break;
         case KEYPAD_KEY2:
             if(DIGITAL_IsHold()) { return; }
-            DIGITAL_NewLine();
+            DIGITAL_EndLine();
             UART.settings.display = !UART.settings.display;
             DIGITAL_Display(UART.settings.display);
             UART_SaveSettings();
