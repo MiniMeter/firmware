@@ -1,7 +1,7 @@
 # firmware
 
 <div align="center">
-    <img src="https://minimeter.github.io/i2c.jpg" alt="i2c">
+    <img src="https://minimeter.github.io/i2c.jpg" alt="i2c" width="500">
 </div>
 <div align="center">
     <img src="https://minimeter.github.io/voltage.jpg" alt="voltage" width="500">
