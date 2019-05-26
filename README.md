@@ -1,4 +1,5 @@
 # firmware
+I2C, Voltage, Current, UART, 1-Wire, SPI, USRT, IRCOM, Frequency, Charge 
 
 <div align="center">
     <img src="https://minimeter.github.io/i2c.jpg" alt="i2c" width="500">
