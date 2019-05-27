@@ -1,5 +1,5 @@
 # firmware
-MiniMeter is a small device that could be helpful during development of electronics circuit on a breadboard. It can decode several bus protocols (I2C, UART, 1-Wire, SPI, USRT, IRCOM) and additionally measure voltage, current, frequency and electric charge. Both hardware and firmware are fully open source (MIT license).
+MiniMeter is a small device that could be helpful during development of electronic circuits on a breadboard. It can decode several bus protocols (I2C, UART, 1-Wire, SPI, USRT, IRCOM) and additionally measure voltage, current, frequency and electric charge. Both hardware and firmware are fully open source (MIT license).
 
 <div align="center">
     <img src="https://minimeter.github.io/i2c.jpg" alt="i2c" width="500">
